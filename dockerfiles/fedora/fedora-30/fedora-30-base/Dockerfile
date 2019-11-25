@@ -55,15 +55,8 @@ RUN dnf -y update && \
         screen \
         tmux \
         sudo \
-        fluxbox \
         hostname \
-        procps \
-        tigervnc-server && \
-    cp -af /etc/skel/ /etc/vncskel/ && \
-    echo "export DISPLAY=1" >>/etc/vncskel/.bashrc && \
-    mkdir  /etc/vncskel/.vnc && \
-    echo "" | vncpasswd -f > /etc/vncskel/.vnc/passwd && \
-    chmod 0600 /etc/vncskel/.vnc/passwd && \
+        procps && \
     useradd -U -m yoctouser
 
 COPY build-install-dumb-init.sh /

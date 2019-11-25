@@ -34,9 +34,9 @@ cp build-install-dumb-init.sh $workdir
 cd $workdir
 
 baseimage=`grep FROM Dockerfile | sed -e 's/FROM //'`
-docker pull $baseimage
+podman pull $baseimage
 
-docker build \
+podman build \
        --build-arg http_proxy=$http_proxy \
        --build-arg HTTP_PROXY=$http_proxy \
        --build-arg https_proxy=$https_proxy \
@@ -63,7 +63,7 @@ cd $workdir
 sed -i -e "s#crops/yocto#$REPO#" Dockerfile
 
 # Lastly build the image
-docker build \
+podman build \
        --build-arg http_proxy=$http_proxy \
        --build-arg HTTP_PROXY=$http_proxy \
        --build-arg https_proxy=$https_proxy \

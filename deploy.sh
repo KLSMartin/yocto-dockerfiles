@@ -22,6 +22,6 @@ set -e
 # get merged
 if [ "${TRAVIS_PULL_REQUEST}" = "false" -a "${TRAVIS_BRANCH}" = "master" ]; then
 
-    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    docker push ${REPO}
+    podman login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    podman push ${REPO}
 fi

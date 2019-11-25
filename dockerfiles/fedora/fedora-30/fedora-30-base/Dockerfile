@@ -31,6 +31,7 @@ RUN dnf -y update && \
         patch \
         diffutils \
         diffstat \
+        dumb-init \
         git \
         git-lfs \
         subversion \
@@ -60,10 +61,7 @@ RUN dnf -y update && \
         procps && \
     useradd -U -m yoctouser
 
-COPY build-install-dumb-init.sh /
-RUN  bash /build-install-dumb-init.sh && \
-     rm /build-install-dumb-init.sh && \
-     dnf -y clean all
+RUN dnf -y clean all
 
 USER yoctouser
 WORKDIR /home/yoctouser

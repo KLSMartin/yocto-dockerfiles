@@ -30,7 +30,6 @@ workdir=`mktemp --tmpdir -d tmp-$TAG.XXX`
 cp -r $dockerdir $workdir
 workdir=$workdir/$TAG
 
-cp build-install-dumb-init.sh $workdir
 cd $workdir
 
 baseimage=`grep FROM Dockerfile | sed -e 's/FROM //'`
@@ -46,34 +45,3 @@ podman build \
        -t $REPO:$TAG .
 rm $workdir -rf
 cd -
-
-# Now build the builder. We copy things to a temporary directory so that we
-# can modify the Dockerfile to use whatever REPO is in the environment.
-TAG=$DISTRO_TO_BUILD-builder
-workdir=`mktemp --tmpdir -d tmp-$TAG.XXX`
-
-# use the builder template to populate the distro specific Dockerfile
-cp dockerfiles/templates/Dockerfile.builder $workdir/Dockerfile
-sed -i "s/DISTRO_TO_BUILD/$DISTRO_TO_BUILD/g" $workdir/Dockerfile
-
-cp helpers/runbitbake.py $workdir
-cd $workdir
-
-# Replace the rewitt/yocto repo with the one from environment
-sed -i -e "s#crops/yocto#$REPO#" Dockerfile
-
-# Lastly build the image
-podman build \
-       --build-arg http_proxy=$http_proxy \
-       --build-arg HTTP_PROXY=$http_proxy \
-       --build-arg https_proxy=$https_proxy \
-       --build-arg HTTPS_PROXY=$https_proxy \
-       --build-arg no_proxy=$no_proxy \
-       --build-arg NO_PROXY=$no_proxy \
-       -t $REPO:$TAG .
-cd -
-
-# builder tests
-./tests/container/smoke.sh $REPO:$DISTRO_TO_BUILD-builder
-
-rm $workdir -rf

@@ -14,7 +14,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-FROM fedora:30
+FROM fedora@sha256:a97c0f02d78221f48d768a4b32b7d73ee70f098954ff6762551ea57f2ad55719
 
 RUN dnf -y update && \
     dnf -y install \
